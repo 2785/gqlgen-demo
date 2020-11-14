@@ -1,0 +1,88 @@
+enum AccountStatus {
+  ACTIVATED
+  DEACTIVATED
+}
+
+enum AccountType {
+  PUBLISHER
+  BUYER
+  DSP
+}
+
+union Account = PublisherAccount | BuyerAccount
+# Publisher Account
+
+type PublisherAccount {
+  # base account type
+  id: Int!
+  creationTime: Time
+  modifyTime: Time
+  name: String
+  status: AccountStatus!
+  accountType: AccountType
+  country: String
+  locale: String
+  timezone: String
+  crmID: ID
+  crmOwner: String
+  groups: [AccountGroup]!
+
+  # Publisher stuff
+  legacyAccountID: Int
+  supplySource: String
+
+  financial: PublisherFinancial
+}
+
+type PublisherFinancial {
+  payeeName: String
+  payeePhone: String
+  payeeAddress: String
+  payeePostalCode: String
+  hstNumber: Int
+  paymentMethod: String
+  openRevenueShare: Int
+  privateRevenueShare: Int
+  currency: String
+  paymentTerms: String
+  autoInvoice: Int
+}
+
+# Buyer Account
+
+type BuyerAccount {
+  # base account type
+  id: Int!
+  creationTime: Time
+  modifyTime: Time
+  name: String
+  status: AccountStatus!
+  accountType: AccountType
+  country: String
+  locale: String
+  timezone: String
+  crmID: ID
+  crmOwner: String
+  groups: [AccountGroup]!
+
+  seats: [Seat]!
+}
+
+type Seat {
+  id: Int!
+  externalTradingDeskID: Int!
+}
+
+# Account Group
+
+type AccountGroup {
+  id: Int
+  name: String
+  creationTime: Time
+  modifyTime: Time
+  accountType: AccountType
+  crmID: ID
+  crmOwner: String
+
+  accounts: [Account]!
+}

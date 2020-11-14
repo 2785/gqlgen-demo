@@ -1,0 +1,33 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+scalar Time
+
+input AccountSearchParam {
+  name: String
+}
+
+type Query {
+  account(id: Int): Account
+  searchAccount(params: AccountSearchParam): [Account]!
+}
+
+input AddBuyer {
+  name: String
+  status: AccountStatus!
+  country: String
+  locale: String
+  timezone: String
+  crmID: ID
+  crmOwner: String
+  seats: [AddSeat]!
+}
+
+input AddSeat {
+  externalTradingDeskID: Int!
+}
+
+type Mutation {
+  addBuyer(buyer: AddBuyer): Boolean!
+}
