@@ -1,33 +1,27 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
+directive @entitlement(resource: String, scope: [String]!) on FIELD_DEFINITION
 
-scalar Time
+type User {
+  name: String!
+  age: Int!
+  id: ID!
+}
 
-input AccountSearchParam {
+input UserSearchParam {
   name: String
+  age: Int
 }
 
 type Query {
-  account(id: Int): Account
-  searchAccount(params: AccountSearchParam): [Account]!
+  user(id: ID): User
+  users(search: UserSearchParam): [User]!
 }
 
-input AddBuyer {
+input AddUser {
   name: String
-  status: AccountStatus!
-  country: String
-  locale: String
-  timezone: String
-  crmID: ID
-  crmOwner: String
-  seats: [AddSeat]!
-}
-
-input AddSeat {
-  externalTradingDeskID: Int!
+  age: Int
 }
 
 type Mutation {
-  addBuyer(buyer: AddBuyer): Boolean!
+  addUser(addUser: AddUser): Boolean!
+    @entitlement(resource: "user", scope: ["write"])
 }
